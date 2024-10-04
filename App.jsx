@@ -4,6 +4,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './src/Screens/Home';
+import Record from './src/Screens/Record';
+import ListOfRecords from './src/Screens/ListOfRecords';
 
 
 const Stack = createNativeStackNavigator();
@@ -15,9 +17,13 @@ const App = () => {
 
       <NavigationContainer>
 
-        <Stack.Navigator screenOptions={{headerShown : false ,}} >
+        <Stack.Navigator screenOptions={{headerShown : false ,}} initialRouteName='LIST_SCREEN' >
 
           <Stack.Screen name='HOME_SCREEN' component={Home} />
+
+          <Stack.Screen name='RECORD_SCREEN'component={Record} />
+
+          <Stack.Screen name='LIST_SCREEN' component={ListOfRecords} />
 
         </Stack.Navigator>
 
