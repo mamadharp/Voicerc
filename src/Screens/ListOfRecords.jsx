@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert , Button , TextInput  } from 'react-native'
 import RNFS from 'react-native-fs';
-import Sound from 'react-native-sound';
 import {Picker} from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 
 //Icons
 
@@ -15,6 +15,7 @@ const ListOfRecords = () => {
     const [renamingFile, setRenamingFile] = useState(null);
     const [newFileName, setNewFileName] = useState('');
     const [sortOption, setSortOption] = useState('name'); // گزینه پیش‌ فرض: مرتب‌سازی بر اساس نام
+    const navigation = useNavigation(); // استفاده از navigation
 
     
     // خواندن فایل‌ها از مسیر
@@ -35,7 +36,7 @@ const ListOfRecords = () => {
 
     }, []);
 
-    // تابع مرتب‌سازی بر اساس پارامتر انتخابی
+    // تابع مرتب‌ سازی بر اساس پارامتر انتخابی
     const sortFiles = (files, option) => {
         if (option === 'name') {
             return files.sort((a, b) => a.name.localeCompare(b.name));
@@ -47,20 +48,6 @@ const ListOfRecords = () => {
         return files;
     };
 
-    // پخش فایل صوتی
-    const playAudio = (filePath) => {
-        const sound = new Sound(filePath, '', (error) => {
-          if (error) {
-            Alert.alert('Error', 'Failed to load the sound');
-            return;
-          }
-          sound.play((success) => {
-            if (!success) {
-              Alert.alert('Error', 'Playback failed');
-            }
-          });
-        });
-    };
 
     //تغیر نام فایل
 
@@ -159,7 +146,8 @@ const ListOfRecords = () => {
             
             ) : (
                 <>
-                    <TouchableOpacity onPress={() => playAudio(item.path)} style={{ flex: 1 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('PLAY_SCREEN', { filePath: item.path, fileName: item.name })}
+                     style={{ flex: 1 }}>
                         
                         <Text>{item.name}</Text>
 
