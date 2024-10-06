@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { View, Button , StyleSheet , Text  } from 'react-native';
+import { View, Button , StyleSheet , Text, TouchableOpacity  } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid } from 'react-native';
+
+//Icons
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { iconSizes, spacing } from '../constants/dimensions';
 
 
 
@@ -30,13 +35,13 @@ const Record = () => {
     }
   }
 
-   const [recording, setRecording] = useState(false);
-   const [filePath, setFilePath] = useState('');
+  const [recording, setRecording] = useState(false);
+  const [filePath, setFilePath] = useState('');
    
 
    
   
-   const startRecording = async () => {
+  const startRecording = async () => {
     
     setRecording(true);
     
@@ -47,9 +52,9 @@ const Record = () => {
 
     await audioRecorderPlayer.startRecorder(path);
 
-   };
+  };
 
-   const stopRecording = async () => {
+  const stopRecording = async () => {
 
     setRecording(false);
 
@@ -57,19 +62,35 @@ const Record = () => {
     await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
     
-    };
+  };
 
 
   return (
 
-    <View>
+    <View  >
         
       <Text>{recording ? 'Recording...' : 'Press to Record'}</Text>
-      {recording ? (
-        <Button title="Stop Recording" onPress={stopRecording} />
-      ) : (
-        <Button title="Start Recording" onPress={startRecording} />
-      )}
+
+      <View>
+
+        {recording ? (
+
+          <TouchableOpacity onPress={stopRecording} >
+            <MaterialCommunityIcons name = {"stop-circle"} size = {iconSizes.xxl} color = {"red"} />
+          </TouchableOpacity>
+
+        ) : 
+        (
+
+          <TouchableOpacity onPress={startRecording} >
+            <MaterialCommunityIcons name = {"record-circle-outline"} size = {iconSizes.xxl} color = {"red"} />
+          </TouchableOpacity>
+
+        ) }
+
+      </View>
+
+
     </View>
 
   )
@@ -77,4 +98,8 @@ const Record = () => {
 
 export default Record
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  Container : {
+    flex : 1 ,
+  } ,
+})

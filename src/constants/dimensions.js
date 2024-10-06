@@ -3,6 +3,8 @@ export const iconSizes = {
     md: 25 ,
     lg: 32 ,
     xl: 40 ,
+    xxl : 70 ,
+    xxxl : 90 ,
 }
 
 export const spacing = {

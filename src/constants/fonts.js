@@ -4,4 +4,5 @@ export const fontFamilies = {
     medium : 'Gilroy-Medium' ,
     regular : 'Gilroy-Regular' ,
     semiBold : 'Gilroy-SemiBold' ,
+    number : 'ROGLyonsTypeRegular3',
 };
