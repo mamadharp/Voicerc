@@ -11,7 +11,7 @@ import { Slider } from 'react-native-awesome-slider';
 
 const Home = () => {
   return (
-    <View>
+    <View style = {styles.Container} >
       <Record />
     </View>
   )
@@ -19,4 +19,8 @@ const Home = () => {
 
 export default Home ;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  Container : {
+    flex : 1 ,
+  } ,
+})

@@ -14,6 +14,7 @@ export const spacing = {
     lg: 24 ,
     xl: 32 ,
     Towxl : 50 ,
+    xxxl : 100 ,
 };
 
 export const fontSize = {
@@ -22,4 +23,6 @@ export const fontSize = {
     md: 16 ,
     lg: 20 ,
     xl: 24 ,
+    xxl : 35 ,
+    xxxl : 45 ,
 };

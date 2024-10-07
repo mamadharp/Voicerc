@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { View, Button , StyleSheet , Text, TouchableOpacity  } from 'react-native';
+import React, { useState , useRef, useEffect} from 'react';
+import { View, Button , StyleSheet , Text, TouchableOpacity , Alert } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 //Icons
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { iconSizes, spacing } from '../constants/dimensions';
+import { fontSize, iconSizes, spacing } from '../constants/dimensions';
+import { colors } from '../constants/colors';
+import { fontFamilies } from '../constants/fonts';
 
 
 
@@ -37,8 +40,37 @@ const Record = () => {
 
   const [recording, setRecording] = useState(false);
   const [filePath, setFilePath] = useState('');
-   
+  const navigation = useNavigation();
+  const [timer, setTimer] = useState(0); // ذخیره زمان ضبط
+  const intervalRef = useRef(null); // برای ذخیره `interval` جهت توقف آن بعداً
 
+
+  const startTimer = () => {
+
+    intervalRef.current = setInterval(() => {
+
+      setTimer(prev => prev + 1); // هر ثانیه یک ثانیه اضافه می‌شود
+
+    }, 1000);
+  };
+
+   
+  const stopTimer = () => {
+
+    if (intervalRef.current) {
+
+      clearInterval(intervalRef.current);
+
+    }
+  };
+
+  // تبدیل ثانیه به ساعت، دقیقه و ثانیه
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs < 10 ? '0' : ''}${hrs}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
    
   
   const startRecording = async () => {
@@ -52,6 +84,9 @@ const Record = () => {
 
     await audioRecorderPlayer.startRecorder(path);
 
+    setTimer(0); // ریست تایمر به صفر
+    startTimer(); // شروع تایمر
+
   };
 
   const stopRecording = async () => {
@@ -61,29 +96,52 @@ const Record = () => {
     // متوقف کردن ضبط
     await audioRecorderPlayer.stopRecorder();
     audioRecorderPlayer.removeRecordBackListener();
+
+    stopTimer();
+
+    const fileName = filePath.split('/').pop(); // گرفتن نام فایل از مسیر
+    Alert.alert('Recording Saved', `Your file has been saved as: ${fileName}`);
     
   };
+
+  useEffect(() => {
+    return () => {
+      // اطمینان از پاک کردن تایمر در صورت خروج از صفحه
+      stopTimer();
+    };
+  }, []);
 
 
   return (
 
-    <View  >
-        
-      <Text>{recording ? 'Recording...' : 'Press to Record'}</Text>
+    <View style = {styles.Container} >
 
-      <View>
+      <View style= {styles.headerContainer} >
+
+        <Text style = {styles.headingtext} >voice recorder</Text>
+
+        <TouchableOpacity onPress={() => navigation.navigate('LIST_SCREEN')} >
+          <Text style = {styles.headingtext} >List</Text>
+        </TouchableOpacity>
+
+      </View>
+        
+
+      <Text style = {styles.TimerText} >{formatTime(timer)}</Text>
+
+      <View style ={styles.recordIconContainer} >
 
         {recording ? (
 
           <TouchableOpacity onPress={stopRecording} >
-            <MaterialCommunityIcons name = {"stop-circle"} size = {iconSizes.xxl} color = {"red"} />
+            <MaterialCommunityIcons name = {"stop-circle"} size = {iconSizes.xxxl} color = {"red"} />
           </TouchableOpacity>
 
         ) : 
         (
 
           <TouchableOpacity onPress={startRecording} >
-            <MaterialCommunityIcons name = {"record-circle-outline"} size = {iconSizes.xxl} color = {"red"} />
+            <MaterialCommunityIcons name = {"record-circle-outline"} size = {iconSizes.xxxl} color = {"red"} />
           </TouchableOpacity>
 
         ) }
@@ -101,5 +159,30 @@ export default Record
 const styles = StyleSheet.create({
   Container : {
     flex : 1 ,
+    backgroundColor : colors.background
+  } ,
+
+  headerContainer : {
+      flexDirection : "row" ,
+      justifyContent : "space-between" ,
+      padding : spacing.md ,
+  } ,
+
+  headingtext : {
+    color : colors.textPrimary ,
+    fontSize : fontSize.xl ,
+    fontFamily : fontFamilies.semiBold ,
+  } ,
+  recordIconContainer : {
+    alignItems : "center" ,
+    paddingTop : spacing.xxxl ,
+  } ,
+
+  TimerText : {
+    alignSelf : "center" ,
+    color : colors.textPrimary ,
+    fontSize : fontSize.xxxl ,
+    fontFamily : fontFamilies.number ,
+    marginTop : 300 ,
   } ,
 })
