@@ -98,6 +98,7 @@ const Record = () => {
     audioRecorderPlayer.removeRecordBackListener();
 
     stopTimer();
+    setTimer(0);
 
     const fileName = filePath.split('/').pop(); // گرفتن نام فایل از مسیر
     Alert.alert('Recording Saved', `Your file has been saved as: ${fileName}`);
@@ -141,7 +142,7 @@ const Record = () => {
         (
 
           <TouchableOpacity onPress={startRecording} >
-            <MaterialCommunityIcons name = {"record-circle-outline"} size = {iconSizes.xxxl} color = {"red"} />
+            <MaterialCommunityIcons name = {"record"} size = {iconSizes.xxxxl} color = {"red"} />
           </TouchableOpacity>
 
         ) }
@@ -171,11 +172,11 @@ const styles = StyleSheet.create({
   headingtext : {
     color : colors.textPrimary ,
     fontSize : fontSize.xl ,
-    fontFamily : fontFamilies.semiBold ,
+    fontFamily : fontFamilies.bold ,
   } ,
   recordIconContainer : {
     alignItems : "center" ,
-    paddingTop : spacing.xxxl ,
+    paddingTop : spacing.xxxxl ,
   } ,
 
   TimerText : {

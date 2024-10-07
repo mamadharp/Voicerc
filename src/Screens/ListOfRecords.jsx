@@ -6,8 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 
 //Icons
 
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { iconSizes, spacing } from '../constants/dimensions';
+import { fontSize, iconSizes, spacing } from '../constants/dimensions';
+import { colors } from '../constants/colors';
+import { fontFamilies } from '../constants/fonts';
 
 const ListOfRecords = () => {
     
@@ -124,22 +127,23 @@ const ListOfRecords = () => {
 
 
     const renderItem = ({ item }) => (
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 10, borderBottomWidth: 1, borderColor: '#ccc' }}>
+        <View style={styles.ListSTL}>
             {renamingFile === item.path ? (
                 <>
                     <TextInput
-                        style={{ flex: 1, borderBottomWidth: 1, borderColor: '#ccc', marginRight: 10 }}
+                        style={styles.RenameText}
                         value={newFileName}
                         onChangeText={setNewFileName}
                         placeholder="Enter new name"
+                        placeholderTextColor={colors.textPrimary}
                     />
 
-                    <TouchableOpacity onPress={() => renameFile(item.path, newFileName)} style ={styles.icons} >
-                        <FontAwesome name = {"check"}  size = {iconSizes.md} />
+                    <TouchableOpacity onPress={() => renameFile(item.path, newFileName)} style ={{paddingRight : spacing.lg }} >
+                        <FontAwesome name = {"check"}  size = {iconSizes.md} color = {colors.iconPrimary} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setRenamingFile(null)} style ={styles.icons} >
-                        <FontAwesome name = {"close"}  size = {iconSizes.md} />
+                    <TouchableOpacity onPress={() => setRenamingFile(null)} style ={{paddingRight : spacing.sm }} >
+                        <FontAwesome name = {"close"}  size = {iconSizes.md} color = {colors.iconPrimary} />
                     </TouchableOpacity>
 
                 </>
@@ -149,20 +153,20 @@ const ListOfRecords = () => {
                     <TouchableOpacity onPress={() => navigation.navigate('PLAY_SCREEN', { filePath: item.path, fileName: item.name })}
                      style={{ flex: 1 }}>
                         
-                        <Text>{item.name}</Text>
+                        <Text style = {styles.ListHeadText} >{item.name}</Text>
 
-                        <Text style={{ fontSize: 12, color: 'gray' }}>{formatFileSize(item.size)}</Text>
+                        <Text style={styles.ListSecondText}>{formatFileSize(item.size)}</Text>
 
-                        <Text style={{ fontSize: 12, color: 'gray' }}>{formatDate(item.mtime)}</Text>
+                        <Text style={styles.ListSecondText}>{formatDate(item.mtime)}</Text>
 
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => setRenamingFile(item.path)} style ={styles.icons} >
-                        <FontAwesome name = {"pencil"}  size = {iconSizes.md} />
+                    <TouchableOpacity onPress={() => setRenamingFile(item.path)} style ={{paddingRight : spacing.lg }} >
+                        <FontAwesome name = {"pencil"}  size = {iconSizes.md} color = {colors.iconPrimary} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => confirmDeleteFile(item.path)} style = {styles.icons} >
-                        <FontAwesome name = {"trash-o"}  size = {iconSizes.md} />
+                    <TouchableOpacity onPress={() => confirmDeleteFile(item.path)} style = {{paddingRight : spacing.sm }} >
+                        <FontAwesome name = {"trash-o"}  size = {iconSizes.md} color = {colors.iconPrimary} />
                     </TouchableOpacity>
 
                 </>
@@ -171,15 +175,27 @@ const ListOfRecords = () => {
     );
 
   return (
-    <View style = {{flex : 1}} >
-        <Text style={styles.HeadingText}>List of Recorded Audios</Text>
+    <View style = {styles.Container} >
+
+        <View style = {styles.headerContainer} >
+
+            <TouchableOpacity onPress={() => navigation.navigate('HOME_SCREEN')} >
+
+                <AntDesign name = {"arrowleft"}  size = {iconSizes.md} color = {colors.iconPrimary} />
+
+            </TouchableOpacity>
+
+            <Text style={styles.HeadingText}>List of Recorded Audios</Text>
+
+        </View>
+        
 
         {/* منوی انتخاب برای مرتب‌سازی */}
         <View style={{ flexDirection : "row" }}>
-            <Text style={{ paddingLeft: 15 , paddingTop : 17 }}>Sort by :</Text>
+            <Text style={styles.SecondHeadText}>Sort by  : </Text>
             <Picker
                 selectedValue={sortOption}
-                style={{ height: 20, width: 110 }}
+                style={styles.Pickerr}
                 onValueChange={(itemValue) => setSortOption(itemValue)}
             >
                 <Picker.Item label="Name" value="name" />
@@ -210,17 +226,74 @@ const ListOfRecords = () => {
 export default ListOfRecords
 
 const styles = StyleSheet.create({
-    icons : {
+    Container : {
+        flex : 1 ,
+        backgroundColor : colors.background
+    } ,
 
-        paddingRight : spacing.lg ,
-    },
+    headerContainer : {
+        flexDirection : "row" ,
+        justifyContent : "space-between" ,
+        padding : spacing.md ,
+    } ,
+
+
     flatlistContainer : {
 
-        paddingLeft : spacing.sm
+        paddingLeft : spacing.sm ,
+        paddingRight : spacing.sm ,
     } ,
-    HeadingText : {
-        fontSize: 20,
-        padding : spacing.md ,
 
-    }
+    HeadingText : {
+        color : colors.textPrimary ,
+        fontSize : fontSize.xl ,
+        fontFamily : fontFamilies.bold ,
+
+    },
+
+    SecondHeadText : {
+        paddingLeft: 15 ,
+        paddingTop : 13 ,
+        color : colors.textPrimary ,
+        fontSize : fontSize.lg ,
+        fontFamily : fontFamilies.semiBold ,
+    } ,
+
+    ListHeadText :{
+        color : colors.textPrimary ,
+        fontSize : fontSize.md ,
+        fontFamily : fontFamilies.medium ,
+    } ,
+
+    ListSecondText : {
+        color : colors.textSecondary ,
+        fontSize : fontSize.bsmd ,
+        fontFamily : fontFamilies.regular ,
+
+    } ,
+
+    ListSTL : {
+
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: colors.iconSecondary ,
+
+    } ,
+
+    RenameText : {
+        color : colors.textPrimary ,
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: colors.textSecondary,
+        marginRight: 10 ,
+    } ,
+    Pickerr : {
+        height: 20,
+        width: 110 ,
+        color : colors.textPrimary ,
+    } ,
+
 })
