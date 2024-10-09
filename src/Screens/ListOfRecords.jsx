@@ -185,7 +185,7 @@ const ListOfRecords = () => {
 
             </TouchableOpacity>
 
-            <Text style={styles.HeadingText}>List of Recorded Audios</Text>
+            <Text style={styles.HeadingText}>List of Record's</Text>
 
         </View>
         

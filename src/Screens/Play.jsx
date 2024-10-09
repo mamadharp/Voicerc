@@ -3,11 +3,15 @@ import { StyleSheet, Text, View , Button , Alert, TouchableOpacity } from 'react
 import Sound from 'react-native-sound';
 import { useSharedValue } from 'react-native-reanimated';
 import { Slider } from 'react-native-awesome-slider';
+import { useNavigation } from '@react-navigation/native';
 
 //icons
 
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { iconSizes, spacing } from '../constants/dimensions';
+import { fontSize, iconSizes, spacing } from '../constants/dimensions';
+import { colors } from '../constants/colors';
+import { fontFamilies } from '../constants/fonts';
 
 
 
@@ -19,6 +23,7 @@ const Play = ({ route, navigation }) => {
     const [duration, setDuration] = useState(0); // طول کل فایل صوتی
     const [pausedPosition, setPausedPosition] = useState(0); // موقعیت مکث
     const [currentPosition, setCurrentPosition] = useState(0);
+    const navigattion = useNavigation(); // استفاده از navigation
 
     const progress = useSharedValue(0);
     const min = useSharedValue(0);
@@ -142,12 +147,39 @@ const Play = ({ route, navigation }) => {
 
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={styles.Container}>
+
+      <View style = {styles.headerContainer} >
+
+        <TouchableOpacity onPress={() => navigattion.navigate('LIST_SCREEN')} >
+
+          <AntDesign name = {"arrowleft"}  size = {iconSizes.md} color = {colors.iconPrimary} />
+
+        </TouchableOpacity>
+
+      </View>
+
         
-        <Text style={{ fontSize: 20, marginBottom: 20 }}>{fileName}</Text>
+      <Text style={styles.HeadingText}>{fileName}</Text>
+
+      {
+        /*  //Text Formating
+        <Text>{`Current Time: ${formatTime(currentPosition)} / Duration: ${formatTime(duration)}`}</Text>
+        */
+      }
+      <View style = {styles.TimeContainer} >
+
+        <Text style = {styles.TimeTexts} >{formatTime(currentPosition)}</Text>
+
+        <Text style = {styles.TimeTexts} >{formatTime(duration)}</Text>
+
+      </View>
+
+      
+
+      <View style={styles.SliderContainer} >
 
         <Slider
-          style={styles.SliderContainer}
           progress={progress}
           minimumValue={min}  // مقدار حداقل از useSharedValue
           maximumValue={max}  // مقدار حداکثر از useSharedValue
@@ -158,17 +190,21 @@ const Play = ({ route, navigation }) => {
             borderRadius : spacing.sm ,
           }}
           theme={{
-            maximumTrackTintColor: "blue",
-            minimumTrackTintColor: "gray",
+            maximumTrackTintColor: colors.maximumTintcolor,
+            minimumTrackTintColor: colors.minimumTintcolor,
+            bubbleBackgroundColor: colors.maximumTintcolor,
           }}
         />
 
-        <Text>{`Current Time: ${formatTime(currentPosition)} / Duration: ${formatTime(duration)}`}</Text>
+      </View>
+
+      
+      <View style = {styles.PlayPauseButtonContainer} >
 
         {isPlaying ? (
           <TouchableOpacity onPress={pauseAudio} >
 
-            <FontAwesome6 name = {"pause"}  size = {iconSizes.xl} />
+            <FontAwesome6 name = {"pause"}  size = {iconSizes.xxl} color = {colors.iconPrimary} />
 
           </TouchableOpacity>
         ) :
@@ -176,11 +212,14 @@ const Play = ({ route, navigation }) => {
 
           <TouchableOpacity onPress={playAudio} >
 
-            <FontAwesome6 name = {"play"}  size = {iconSizes.xl} />
+            <FontAwesome6 name = {"play"}  size = {iconSizes.xxl} color = {colors.iconPrimary} />
 
           </TouchableOpacity>
 
         ) }
+
+      </View>
+      
 
 
     </View>
@@ -190,7 +229,49 @@ const Play = ({ route, navigation }) => {
 export default Play ;
 
 const styles = StyleSheet.create({
+  
+  Container : {
+    flex : 1 ,
+    backgroundColor : colors.background
+  } ,
+
+  headerContainer : {
+    flexDirection : "row" ,
+    justifyContent : "space-between" ,
+    padding : spacing.md ,
+  } ,
+
+  TimeContainer : {
+    marginTop : spacing.xxxxl ,
+    flexDirection : "row" ,
+    justifyContent : "space-between" ,
+    padding : spacing.lg ,
+  } ,
+
+  PlayPauseButtonContainer : {
+    alignItems : "center" ,
+    paddingTop : spacing.Towxl ,
+
+  } ,
+
+  TimeTexts : {
+    color : colors.textPrimary ,
+    fontSize : fontSize.lg ,
+    fontFamily : fontFamilies.semiBold ,
+  } ,
+
   SliderContainer : {
-    marginVertical : spacing.xl ,
-}
+    
+    paddingLeft : spacing.md ,
+    paddingRight : spacing.md ,
+  } ,
+
+  HeadingText : {
+    paddingTop : spacing.xxxxl ,
+    alignSelf : "center" ,
+    color : colors.textPrimary ,
+    fontSize : fontSize.lg ,
+    fontFamily : fontFamilies.semiBold ,
+
+  },
 })
