@@ -192,7 +192,7 @@ const Play = ({ route, navigation }) => {
           theme={{
             maximumTrackTintColor: colors.maximumTintcolor,
             minimumTrackTintColor: colors.minimumTintcolor,
-            bubbleBackgroundColor: colors.maximumTintcolor,
+            bubbleBackgroundColor: colors.textSecondary,
           }}
         />
 

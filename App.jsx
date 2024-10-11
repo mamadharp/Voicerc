@@ -7,6 +7,7 @@ import Home from './src/Screens/Home';
 import Record from './src/Screens/Record';
 import ListOfRecords from './src/Screens/ListOfRecords';
 import Play from './src/Screens/Play';
+import PlayAi from './src/Screens/PlayAi';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,8 @@ const App = () => {
           <Stack.Screen name='LIST_SCREEN' component={ListOfRecords} />
 
           <Stack.Screen name='PLAY_SCREEN' component={Play} />
+
+          <Stack.Screen name='PLAYAI_SCREEN' component={PlayAi} />
 
         </Stack.Navigator>
 

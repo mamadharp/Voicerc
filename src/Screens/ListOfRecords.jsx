@@ -150,7 +150,7 @@ const ListOfRecords = () => {
             
             ) : (
                 <>
-                    <TouchableOpacity onPress={() => navigation.navigate('PLAY_SCREEN', { filePath: item.path, fileName: item.name })}
+                    <TouchableOpacity onPress={() => navigation.navigate('PLAYAI_SCREEN', { filePath: item.path, fileName: item.name })}
                      style={{ flex: 1 }}>
                         
                         <Text style = {styles.ListHeadText} >{item.name}</Text>
