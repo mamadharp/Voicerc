@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
-import TrackPlayer, { useTrackPlayerEvents, TrackPlayerEvents, useProgress, State, usePlaybackState } from 'react-native-track-player';
+import TrackPlayer, { useTrackPlayerEvents, TrackPlayerEvents,
+   useProgress, State, usePlaybackState , Capability } from 'react-native-track-player';
 import { useSharedValue } from 'react-native-reanimated';
 import { Slider } from 'react-native-awesome-slider';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -26,10 +27,20 @@ const PlayAi = ({ route, navigation }) => {
   const { duration , position } = useProgress();
 
   const setuppPlayer = async () => {
-    await TrackPlayer.setupPlayer() ;
+    await TrackPlayer.setupPlayer();
+    await TrackPlayer.updateOptions({
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+        Capability.Stop,
+    ],
+    compactCapabilities: [Capability.Play, Capability.Pause],
+    });
   };
 
-  //const setFile = async () => {} ;
+  
 
 
   useFocusEffect(
@@ -110,6 +121,7 @@ const PlayAi = ({ route, navigation }) => {
           maximumValue={max}
           thumbWidth={spacing.md}
           onSlidingStart={() => (isSliding.value = true)}
+          renderBubble={() => null}
           onValueChange={async (value) => {await TrackPlayer.seekTo(value * duration)} }
           onSlidingComplete={async (value) => {
             if (!isSliding.value) {
