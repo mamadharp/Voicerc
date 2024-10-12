@@ -25,25 +25,27 @@ const PlayAi = ({ route, navigation }) => {
   // استفاده از هوک useProgress برای دریافت زمان فعلی و مدت زمان کل
   const { duration , position } = useProgress();
 
+  const setuppPlayer = async () => {
+    await TrackPlayer.setupPlayer() ;
+  };
+
+  //const setFile = async () => {} ;
+
 
   useFocusEffect(
     React.useCallback(() => {
-      const setupPlayer = async () => {
-        await TrackPlayer.setupPlayer();
-        await TrackPlayer.reset();
-        await TrackPlayer.add({
-          id: 'trackId',
-          url: filePath,
-          title: fileName,
-          artist: 'Unknown Artist',
-        });
-      };
 
-      setupPlayer();
+      
+      setuppPlayer();
+
+      
+
 
       return () => {
+        TrackPlayer.stop();
         // Reset player only when leaving the screen
-        TrackPlayer.reset();
+        TrackPlayer.reset() ;
+        
       };
     }, [filePath, fileName])
   );
@@ -54,6 +56,12 @@ const PlayAi = ({ route, navigation }) => {
 
   // مدیریت پخش
   const playAudio = async () => {
+    await TrackPlayer.add({
+      id: 'trackId',
+      url: filePath,
+      title: fileName,
+      artist: 'Unknown Artist',
+    });
     await TrackPlayer.play();
     setIsPlaying(true);
   };
