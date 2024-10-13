@@ -25,7 +25,7 @@ const ListOfRecords = () => {
 
     const fetchAudioFiles = async () => {
         try {
-            const files = await RNFS.readDir(RNFS.DownloadDirectoryPath); // لیست فایل‌های دایرکتوری
+            const files = await RNFS.readDir(RNFS.ExternalDirectoryPath); // لیست فایل‌های دایرکتوری
             const audioFiles = files.filter(file => file.name.endsWith('.mp3')); // فقط فایل‌های صوتی
             setAudioFiles(audioFiles);
         } catch (error) {

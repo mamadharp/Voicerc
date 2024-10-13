@@ -16,6 +16,8 @@ import { fontFamilies } from '../constants/fonts';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
+//const RECORD_FOLDER = `${RNFS.DownloadDirectoryPath}/MyRecords`; // مسیر پوشه رکورد
+
 const Record = () => {
 
   async function requestPermissions() {
@@ -43,6 +45,9 @@ const Record = () => {
   const navigation = useNavigation();
   const [timer, setTimer] = useState(0); // ذخیره زمان ضبط
   const intervalRef = useRef(null); // برای ذخیره `interval` جهت توقف آن بعداً
+
+
+  
 
 
   const startTimer = () => {
@@ -75,18 +80,35 @@ const Record = () => {
   
   const startRecording = async () => {
     
-    setRecording(true);
+      setRecording(true);
+
+      {/* 
+        
+        // چک کردن وجود پوشه
+        const folderExists = await RNFS.exists(RECORD_FOLDER);
+        if (!folderExists) {
+          // ایجاد پوشه در صورت نبود آن
+          await RNFS.mkdir(RECORD_FOLDER);
+          console.log('Record folder created.');
+        } else {
+          console.log('Record folder already exists.');
+        }
+
+      */}
+
+      // مسیر برای ذخیره فایل صوتی در داخل پوشه رکورد
+      const path = `${RNFS.ExternalDirectoryPath}/recorded_audio_${Date.now()}.mp3`;//این گونه فایل ظبط شده در خود فایل های دیتای برنامه ذخیره میشود البته فقط برای اندروید
+      console.log('Recording to : ', path);
+      setFilePath(path);
+
+      // شروع ضبط صدا
+      await audioRecorderPlayer.startRecorder(path);
+      console.log('Recording started.');
+
+      setTimer(0); // ریست تایمر به صفر
+      startTimer(); // شروع تایمر
+
     
-    // مسیر برای ذخیره فایل صوتی
-
-    const path = `${RNFS.DownloadDirectoryPath}/recorded_audio_${Date.now()}.mp3`;
-    setFilePath(path);
-
-    await audioRecorderPlayer.startRecorder(path);
-
-    setTimer(0); // ریست تایمر به صفر
-    startTimer(); // شروع تایمر
-
   };
 
   const stopRecording = async () => {

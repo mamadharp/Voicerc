@@ -31,3 +31,26 @@
 if (!isSliding.value) {
     progress.value = duration > 0 ? position / duration : 0; // به‌روزرسانی مقدار اسلایدر با زمان فعلی
   }
+
+
+
+
+const startRecording = async () => {
+    
+    setRecording(true);
+    
+    // مسیر برای ذخیره فایل صوتی
+
+    const path = `${RNFS.DownloadDirectoryPath}/recorded_audio_${Date.now()}.mp3`;
+    setFilePath(path);
+
+    await audioRecorderPlayer.startRecorder(path);
+
+    setTimer(0); // ریست تایمر به صفر
+    startTimer(); // شروع تایمر
+
+  };
+
+
+
+  https://www.scaler.com/topics/react-native-fs/

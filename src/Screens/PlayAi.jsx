@@ -99,12 +99,20 @@ const PlayAi = ({ route, navigation }) => {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
 
+  
+
   return (
     <View style={styles.Container}>
       <View style={styles.headerContainer}>
+
         <TouchableOpacity onPress={() => navigation.navigate('LIST_SCREEN')}>
           <AntDesign name={"arrowleft"} size={iconSizes.md} color={colors.iconPrimary} />
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => {Alert.alert('File Location', " Yuor File Save'd in : /storage/Android/data/com.voicerc/files/ 'File - Name' ")}}>
+          <AntDesign name={"infocirlce"} size={iconSizes.md} color={colors.iconPrimary} />
+        </TouchableOpacity>
+
       </View>
 
       <Text style={styles.HeadingText}>{fileName}</Text>
