@@ -61,7 +61,7 @@ const ListOfRecords = () => {
         }
     
         try {
-          const newFilePath = `${RNFS.DownloadDirectoryPath}/${newFileName}.mp3`;
+          const newFilePath = `${RNFS.ExternalDirectoryPath}/${newFileName}.mp3`;
           await RNFS.moveFile(oldFilePath, newFilePath);
           Alert.alert('Success', 'File renamed successfully');
           setRenamingFile(null);
